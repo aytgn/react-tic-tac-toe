@@ -2,17 +2,21 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 
-
+//SQUARE COMPONENT -> FUNCTION!
 function Square(props) {
   return (
+    //onClick, run the method given property named onClick.
     <button className="square" onClick={props.onClick}>
+      {/* show value named property given by parent */}
       {props.value}
     </button>
   );
 }
 
 class Board extends React.Component {
+  //A method to render Square component. The reason usage of indirectly is: send arguments easily multiple occurrences.
   renderSquare(i) {
+    //assign value and onClick properties to Square(which is a child component). Assigned values are coming from Board's parent component then go to Square component
     return (
       <Square
         value={this.props.squares[i]}
@@ -22,6 +26,7 @@ class Board extends React.Component {
   }
 
   render() {
+    //Board Component renders 9 Square with helper render function. Passes different
     return (
       <div>
         <div className="board-row">
@@ -50,15 +55,16 @@ class Game extends React.Component {
     this.state = {
       history: [
         {
-          squares: Array(9).fill(null)
-        }
+          squares: Array(9).fill(null),
+        },
       ],
       stepNumber: 0,
-      xIsNext: true
+      xIsNext: true,
     };
   }
 
   handleClick(i) {
+    //create a copy of history state, at start all squares are null
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
     const squares = current.squares.slice();
@@ -69,18 +75,18 @@ class Game extends React.Component {
     this.setState({
       history: history.concat([
         {
-          squares: squares
-        }
+          squares: squares,
+        },
       ]),
       stepNumber: history.length,
-      xIsNext: !this.state.xIsNext
+      xIsNext: !this.state.xIsNext,
     });
   }
 
   jumpTo(step) {
     this.setState({
       stepNumber: step,
-      xIsNext: (step % 2) === 0
+      xIsNext: step % 2 === 0,
     });
   }
 
@@ -90,9 +96,7 @@ class Game extends React.Component {
     const winner = calculateWinner(current.squares);
 
     const moves = history.map((step, move) => {
-      const desc = move ?
-        'Go to move #' + move :
-        'Go to game start';
+      const desc = move ? "Go to move #" + move : "Go to game start";
       return (
         <li key={move}>
           <button onClick={() => this.jumpTo(move)}>{desc}</button>
@@ -112,7 +116,7 @@ class Game extends React.Component {
         <div className="game-board">
           <Board
             squares={current.squares}
-            onClick={i => this.handleClick(i)}
+            onClick={(i) => this.handleClick(i)}
           />
         </div>
         <div className="game-info">
@@ -137,7 +141,7 @@ function calculateWinner(squares) {
     [1, 4, 7],
     [2, 5, 8],
     [0, 4, 8],
-    [2, 4, 6]
+    [2, 4, 6],
   ];
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
